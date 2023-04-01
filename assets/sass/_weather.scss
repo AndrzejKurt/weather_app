@@ -1,0 +1,16 @@
+.weather {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    &__title {
+        margin: 0 0 30px 0;
+        color: $titleColor;
+        text-align: 50px;
+        font-size: 50px;
+        letter-spacing: 2px;
+        user-select: none;
+    }
+
+}
