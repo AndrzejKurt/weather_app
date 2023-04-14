@@ -10,16 +10,36 @@ weatherForm.addEventListener('submit', (event) => {
     let city = inputCity.value;
     let fullApiUrl = apiUrl + city
 
-    fetch(fullApiUrl)
-    .then(response => response.json())
-    .then((dataFromApi)=> {
+    fetch(fullApiUrl).then(response => {
+        if (response.status===200) {
+            return response.json()
+        }
+
+        throw new Error('Api Error')
+
+    }).then((dataFromApi)=> {
         // console.log(dataFromApi.current.temp_c)
+
         let view = ``
-            // view += `W ${dataFromApi.location.name} jest dzisiaj ${dataFromApi.current.temp_c} stopni celcjusza`    
 
-        view += `<div class="weather__info">`  
+//------------------------------------------------------------------------
+
+        // data
+        // view += `W ${dataFromApi.location.name} jest dzisiaj ${dataFromApi.current.temp_c} stopni celcjusza`    
+
+        view += `<div class="weather__info">` 
+
+//------------------------------------------------------------------------
+
+        // county, city, time(region)
+
+        view += `<div class="weather__region">
+            <p>${dataFromApi.location.name}</p>
+            <p>${dataFromApi.location.country}</p>
+            <p>${dataFromApi.location.localtime}</p>
+        </div>`
         
-
+//------------------------------------------------------------------------
 
         //icon
 
@@ -27,7 +47,7 @@ weatherForm.addEventListener('submit', (event) => {
 
         <img src="${dataFromApi.current.condition.icon}" alt="${dataFromApi.current.condition.text}"></div>`
 
-
+//------------------------------------------------------------------------
 
         //temp
 
@@ -37,7 +57,8 @@ weatherForm.addEventListener('submit', (event) => {
         </span>
         </div>`
 
-
+//------------------------------------------------------------------------
+        
         //detail
 
         view += `<div class="weather__details">
@@ -49,9 +70,19 @@ weatherForm.addEventListener('submit', (event) => {
         view += `</div>`
 
         apiDataContainer.innerHTML = view
-    }) 
+
+    }).catch((error) => {
+        showError()
+    })
 
     event.preventDefault()
 
 })
 
+/*
+Show error function
+*/
+
+let showError = () => {
+    apiDataContainer.innerHTML = `<div class="weather__error">City not found or we have problem with API</div>`
+}
