@@ -1,16 +1,19 @@
 let weatherForm = document.querySelector('.weather__form')
 let inputCity = document.querySelector('.weather__city')
 let apiDataContainer = document.querySelector('.weather__data')
+let loader = document.querySelector('.weather__loader')
 
 let apiUrl = 'https://api.weatherapi.com/v1/current.json?key=991cd10a13584fa6a89131251230104&aqi=yes&q='
 
 
 
 weatherForm.addEventListener('submit', (event) => {
+    showLoader()
     let city = inputCity.value;
     let fullApiUrl = apiUrl + city
 
     fetch(fullApiUrl).then(response => {
+        hideLoader()
         if (response.status===200) {
             return response.json()
         }
@@ -79,10 +82,30 @@ weatherForm.addEventListener('submit', (event) => {
 
 })
 
-/*
-Show error function
-*/
+// Show error function
 
 let showError = () => {
     apiDataContainer.innerHTML = `<div class="weather__error">City not found or we have problem with API</div>`
+}
+
+
+// display and hide loader
+
+let showLoader = () => {
+    loader.style.display = 'block'
+}
+
+let hideLoader = () => {
+    loader.style.display = 'none'
+}
+
+// -------------------------------------------------------------------------------
+
+if ("serviceWorker" in navigator) {
+    window.addEventListener("load", function() {
+        navigator.serviceWorker
+            .register("serviceWorker.js")
+            .then(res => console.log("service worker registered"))
+            .catch(err => console.log("service worker not registered", err))
+    })
 }

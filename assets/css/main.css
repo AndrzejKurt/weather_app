@@ -371,6 +371,9 @@ h6 {
   letter-spacing: 2px;
   border-radius: 20px;
 }
+.weather__loader {
+  display: none;
+}
 
 .lds-spinner {
   color: official;
